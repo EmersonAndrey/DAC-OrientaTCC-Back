@@ -1,5 +1,6 @@
 package dac.orientaTCC.model.entities;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -8,7 +9,15 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class PDF {
 
@@ -17,45 +26,15 @@ public class PDF {
     private Long id;
 
     @NotBlank(message = "O nome do arquivo deve ser informado")
+    @Column(name = "nome_arquivo", nullable = false)
     private String nomeArquivo;
 
     @Lob
+    @Column(nullable = false)
     private byte[] conteudo;
 
     @ManyToOne
-    @JoinColumn(name = "atividade_id")
+    @JoinColumn(name = "atividade_id", nullable = false)
     private Atividade atividade;
-
-    public Atividade getAtividade() {
-        return atividade;
-    }
-
-    public void setAtividade(Atividade atividade) {
-        this.atividade = atividade;
-    }
-
-    public byte[] getConteudo() {
-        return conteudo;
-    }
-
-    public void setConteudo(byte[] conteudo) {
-        this.conteudo = conteudo;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNomeArquivo() {
-        return nomeArquivo;
-    }
-
-    public void setNomeArquivo(String nomeArquivo) {
-        this.nomeArquivo = nomeArquivo;
-    }
 
 }
