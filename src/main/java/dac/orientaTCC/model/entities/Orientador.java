@@ -37,7 +37,7 @@ public class Orientador {
 
     @NotBlank(message = "O email do orientador deve ser informado")
     @Email(message = "O email deve ser válido")
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
     @NotBlank(message = "A senha do orientador deve ser informada")
