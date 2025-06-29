@@ -3,7 +3,6 @@ package dac.orientaTCC.model.entities;
 import java.time.LocalDate;
 import java.util.List;
 
-import dac.orientaTCC.enums.FasesEntrega;
 import dac.orientaTCC.enums.StatusPDF;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -40,10 +39,9 @@ public class Atividade {
     @Column(name = "data_entrega", nullable = false)
     private LocalDate dataEntrega;
 
-    @Enumerated(EnumType.STRING)
-    @NotNull(message = "A fase de entrega deve ser informada")
-    @Column(name = "fases_entrega", nullable = false)
-    private FasesEntrega fasesEntrega;
+    @NotBlank(message = "O nome da atividade deve ser informada")
+    @Column(name = "nome_da_atividade", nullable = false)
+    private String nome;
 
     @Enumerated(EnumType.STRING)
     @NotNull(message = "O status da entrega deve ser informado")
@@ -61,5 +59,5 @@ public class Atividade {
     @OneToMany(mappedBy = "atividade", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PDF> pdfs;
 
-    private String comentario;
+    private List<String> comentario;
 }

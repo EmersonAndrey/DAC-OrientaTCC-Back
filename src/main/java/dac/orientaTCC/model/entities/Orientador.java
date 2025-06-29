@@ -2,12 +2,9 @@ package dac.orientaTCC.model.entities;
 
 import java.util.List;
 
-import dac.orientaTCC.enums.Permissao;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -29,11 +26,6 @@ public class Orientador {
     @Id
     @NotBlank(message = "O SIAPE do orientador deve ser informado")
     private String siape;
-
-    @Enumerated(EnumType.STRING)
-    @NotBlank(message = "A permissão do orientador deve ser informada")
-    @Column(nullable = false)
-    private Permissao permissao;
 
     @NotBlank(message = "O email do orientador deve ser informado")
     @Email(message = "O email deve ser válido")

@@ -14,7 +14,7 @@ public class AlunoService {
     private final AlunoRepository alunoRepository;
 
     @Transactional(readOnly = true)
-    public Aluno findById(String id) {
+    public Aluno findById(Long id) {
         return alunoRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException(String.format("Usuario id = %s não encontrado", id))
         );

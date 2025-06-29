@@ -17,7 +17,7 @@ public class AlunoController {
     private final AlunoService alunoService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Aluno> findById(@PathVariable String id){
+    public ResponseEntity<Aluno> findById(@PathVariable Long id){
         return ResponseEntity.ok().body(alunoService.findById(id));
     }
 
