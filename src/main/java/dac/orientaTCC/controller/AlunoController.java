@@ -1,4 +1,4 @@
-package dac.orientaTCC.controller.exception;
+package dac.orientaTCC.controller;
 
 import dac.orientaTCC.model.entities.Aluno;
 import dac.orientaTCC.service.AlunoService;
