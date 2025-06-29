@@ -1,11 +1,6 @@
 package dac.orientaTCC.model.entities;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -22,7 +17,11 @@ import lombok.Setter;
 public class Aluno {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @NotBlank(message = "A matricula do aluno deve ser informada")
+    @Column(nullable = false, unique = true, name = "matricula")
     private String matricula;
 
     @NotBlank(message = "O email do aluno deve ser informado")
@@ -37,8 +36,5 @@ public class Aluno {
     @NotBlank(message = "A nome do aluno deve ser informado")
     @Column(nullable = false)
     private String nome; 
-
-    @OneToOne(mappedBy = "aluno", cascade = CascadeType.ALL)
-    private TrabalhoAcademicoTCC tcc;
 
 }

@@ -3,13 +3,7 @@ package dac.orientaTCC.model.entities;
 import java.time.LocalDate;
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -26,8 +20,8 @@ import lombok.Setter;
 public class TrabalhoAcademicoTCC {
 
     @Id
-    @Column(name = "matricula_aluno", nullable = false)
-    private String matriculaAluno;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "siape_orientador", nullable = false)
@@ -44,5 +38,9 @@ public class TrabalhoAcademicoTCC {
 
     @OneToMany(mappedBy = "trabalho", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Atividade> atividades;
+
+    @OneToOne
+    @JoinColumn(name = "aluno_matricula", nullable = false)
+    private Aluno aluno;
 
 }
