@@ -20,21 +20,13 @@ public class Aluno {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "A matricula do aluno deve ser informada")
     @Column(nullable = false, unique = true, name = "matricula")
     private String matricula;
 
-    @NotBlank(message = "O email do aluno deve ser informado")
-    @Email(message = "O email deve ser válido")
-    @Column(nullable = false, unique = true)
-    private String email;
-
-    @NotBlank(message = "A senha do aluno deve ser informada")
     @Column(nullable = false)
-    private String senha;
+    private String nome;
 
-    @NotBlank(message = "A nome do aluno deve ser informado")
-    @Column(nullable = false)
-    private String nome; 
-
+    @OneToOne
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private Usuario usuario;
 }

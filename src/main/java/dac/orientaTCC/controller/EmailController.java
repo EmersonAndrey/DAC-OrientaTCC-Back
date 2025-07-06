@@ -19,7 +19,7 @@ public class EmailController {
 
     @PostMapping("/enviar")
     public String send(@RequestParam String to, @RequestParam String nome) {
-        emailService.enviarEmail(to, nome);
+       // emailService.enviarEmail(to, nome);
         return "Enviado para " + to;
     }
 
