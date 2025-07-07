@@ -7,6 +7,9 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AlunoMapper {
 
@@ -15,6 +18,12 @@ public class AlunoMapper {
     }
 
     public static AlunoResponseDTO toAlunoDTO(Aluno aluno){
-        return new ModelMapper().map(aluno, AlunoResponseDTO.class);
+        AlunoResponseDTO dto = new ModelMapper().map(aluno, AlunoResponseDTO.class);
+        dto.setEmail(aluno.getUsuario().getEmail());
+        return dto;
+    }
+
+    public static List<AlunoResponseDTO> toListAlunoDTO(List<Aluno> alunos){
+        return alunos.stream().map(a -> toAlunoDTO(a)).collect(Collectors.toList());
     }
 }

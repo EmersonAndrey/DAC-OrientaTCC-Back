@@ -16,7 +16,7 @@ public class UsuarioController {
     private final UsuarioService usuarioService;
 
     @PatchMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ORIENTADOR','ALUNO') AND (#id == authentication.principal.id)") //hasAnyRole('ORIENTADOR','ALUNO') RECEBE UMA LISTA DE USUARIOS, E CADA USUARIO SO PODE AlTERAR SUA PROPRIA SENHA
+    @PreAuthorize("hasAnyRole('COORDENADOR','ALUNO', 'ORIENTADOR') AND (#id == authentication.principal.id)") //hasAnyRole('COORDENADOR','ALUNO', 'ORIENTADOR') RECEBE UMA LISTA DE USUARIOS, E CADA USUARIO SO PODE AlTERAR SUA PROPRIA SENHA
     public ResponseEntity<Void> updatePassword(@PathVariable Long id, @Valid @RequestBody UsuarioSenhaDTO usuarioSenhaDTO){
         usuarioService.editarSenha(id, usuarioSenhaDTO.getSenhaAtual(),usuarioSenhaDTO.getNovaSenha(),usuarioSenhaDTO.getConfirmaSenha());
 

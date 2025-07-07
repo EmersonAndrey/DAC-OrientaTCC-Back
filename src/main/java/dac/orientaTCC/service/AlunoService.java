@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class AlunoService {
@@ -42,5 +44,32 @@ public class AlunoService {
         return alunoRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException(String.format("Usuario id = %s não encontrado", id))
         );
+    }
+
+    @Transactional(readOnly = true)
+    public Aluno findByIdUsuario(Long id) {
+        return alunoRepository.findByUsuarioId(id).orElseThrow(
+                () -> new EntityNotFoundException(String.format("Usuario id = %s não encontrado", id))
+        );
+    }
+
+    @Transactional(readOnly = true)
+    public Aluno findByEmail(String email) {
+        return alunoRepository.findByUsuarioEmail(email);
+    }
+
+    @Transactional(readOnly = true)
+    public Aluno findByMatricula(String matricula) {
+        return alunoRepository.findByMatricula(matricula);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Aluno> findAll() {
+        return alunoRepository.findAll();
+    }
+
+    @Transactional
+    public void remove(Long id) {
+        //esperando vcs
     }
 }

@@ -26,7 +26,7 @@ public class Aluno {
     @Column(nullable = false)
     private String nome;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 }
