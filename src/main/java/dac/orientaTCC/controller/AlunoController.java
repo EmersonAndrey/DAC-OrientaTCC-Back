@@ -31,8 +31,9 @@ public class AlunoController {
 
     @PreAuthorize("hasRole('ALUNO')")
     @GetMapping("/{id}")
-    public ResponseEntity<Aluno> findById(@PathVariable Long id){
-        return ResponseEntity.ok().body(alunoService.findById(id));
+    public ResponseEntity<AlunoResponseDTO> findById(@PathVariable Long id){
+        Aluno aluno = alunoService.findById(id);
+        return ResponseEntity.ok().body(AlunoMapper.toAlunoDTO(aluno));
     }
 
     @PreAuthorize("hasRole('COORDENADOR') OR #email == authentication.principal.username")
