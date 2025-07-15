@@ -1,24 +1,30 @@
 package dac.orientaTCC.service;
 
 import dac.orientaTCC.dto.*;
+import dac.orientaTCC.enums.Role;
 import dac.orientaTCC.mapper.OrientadorMapper;
+import dac.orientaTCC.model.entities.Aluno;
 import dac.orientaTCC.model.entities.Orientador;
 import dac.orientaTCC.model.entities.Usuario;
 import dac.orientaTCC.repository.OrientadorRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class OrientadorService {
 
     private final OrientadorRepository orientadorRepository;
     private final UsuarioService usuarioService;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public Orientador save(Orientador orientador) { //colocar o tratamento depois
@@ -33,7 +39,7 @@ public class OrientadorService {
         orientador.setUsuario(usuario);
 
         orientador = save(orientador);
-
+        log.info("email no create: {}", orientador.getUsuario().getEmail());
         return OrientadorMapper.toOrientadorDTO(orientador);
     }
 
@@ -66,4 +72,25 @@ public class OrientadorService {
         );
     }
 
+    @Transactional
+    public Orientador update(OrientadorCreateDTO orientadorCreateDTO) {
+
+        Orientador orientadorBuscado = findBySiape(orientadorCreateDTO.getSiape());
+
+        orientadorBuscado.setNome(orientadorCreateDTO.getNome());
+
+        orientadorBuscado.setAreaAtuacao(orientadorCreateDTO.getAreaAtuacao());
+
+        orientadorBuscado.getUsuario().setSenha(passwordEncoder.encode(orientadorCreateDTO.getSenha()));
+
+        return orientadorBuscado;
+    }
+
+    @Transactional
+    public Orientador updateRole(OrientadorCreateDTO orientadorCreateDTO) {
+        Orientador orientadorBuscado = findBySiape(orientadorCreateDTO.getSiape());
+
+        orientadorBuscado.getUsuario().setTipoRole(Role.ROLE_COORDENADOR);
+        return orientadorBuscado;
+    }
 }

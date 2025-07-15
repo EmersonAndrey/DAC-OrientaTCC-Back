@@ -18,7 +18,13 @@ public class OrientadorMapper {
     }
 
     public static OrientadorResponseDTO toOrientadorDTO(Orientador orientador){
-        return new ModelMapper().map(orientador, OrientadorResponseDTO.class);
+        ModelMapper modelMapper = new ModelMapper();
+
+        modelMapper.typeMap(Orientador.class, OrientadorResponseDTO.class).addMappings(mapper -> {
+            mapper.map(src -> src.getUsuario().getEmail(), OrientadorResponseDTO::setEmail);
+        });
+
+        return modelMapper.map(orientador, OrientadorResponseDTO.class);
     }
 
     public static List<OrientadorResponseDTO> toListOrientadorDTO(List<Orientador> orientadores){
