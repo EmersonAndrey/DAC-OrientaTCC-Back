@@ -42,7 +42,7 @@ public class TrabalhoAcademicoTCCController {
     }
 
     @GetMapping("/matricula/{matricula}")
-    @PreAuthorize("hasRole('ALUNO')")
+    //@PreAuthorize("hasRole('ALUNO')")
     public ResponseEntity<TrabalhoAcademicoTCCResponseDTO> findByMatriculaAluno(@PathVariable String matricula) {
         TrabalhoAcademicoTCC response = trabalhoAcademicoTCCService.findByMatriculaAluno(matricula);
         return ResponseEntity.ok().body(TrabalhoAcademicoTCCMapper.toDTO(response));

@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import dac.orientaTCC.dto.TrabalhoAcademicoTCCCreateDTO;
 import dac.orientaTCC.dto.TrabalhoAcademicoTCCResponseDTO;
+import dac.orientaTCC.exception.TrabalhoAcademicoNaoEncontradoPorMatriculaException;
 import dac.orientaTCC.mapper.TrabalhoAcademicoTCCMapper;
 import dac.orientaTCC.model.entities.TrabalhoAcademicoTCC;
 import dac.orientaTCC.repository.TrabalhoAcademicoTCCRepository;
@@ -49,7 +50,13 @@ public class TrabalhoAcademicoTCCService {
 
     @Transactional(readOnly = true)
     public TrabalhoAcademicoTCC findByMatriculaAluno(String matricula) {
-        return trabalhoAcademicoTCCRepository.findByAlunoMatricula(matricula);
+        TrabalhoAcademicoTCC trabalho = trabalhoAcademicoTCCRepository.findByAlunoMatricula(matricula);
+
+        if (trabalho == null) {
+            throw new TrabalhoAcademicoNaoEncontradoPorMatriculaException("Nenhum trabalho encontrado para a matrícula: " + matricula);
+        }
+
+        return trabalho;
     }
 
     @Transactional(readOnly = true)
