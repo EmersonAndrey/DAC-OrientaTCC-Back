@@ -2,6 +2,7 @@ package dac.orientaTCC.controller;
 
 import dac.orientaTCC.dto.AlunoCreateDTO;
 import dac.orientaTCC.dto.AlunoResponseDTO;
+import dac.orientaTCC.jwt.JwtUserDetails;
 import dac.orientaTCC.mapper.AlunoMapper;
 import dac.orientaTCC.model.entities.Aluno;
 import dac.orientaTCC.service.AlunoService;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,7 +24,7 @@ public class AlunoController {
     private final AlunoService alunoService;
 
     @PostMapping
-    @PreAuthorize("hasRole('COORDENADOR')")
+    //@PreAuthorize("hasRole('COORDENADOR')")
     public ResponseEntity<AlunoResponseDTO> create(@RequestBody @Valid AlunoCreateDTO alunoCreateDTO){
         AlunoResponseDTO aluno = alunoService.create(alunoCreateDTO);
 
@@ -65,4 +67,10 @@ public class AlunoController {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasRole('ALUNO') AND #alunoCreateDTO.getMatricula == authentication.principal.identificador")
+    @PutMapping
+    public ResponseEntity<AlunoResponseDTO> update(@RequestBody AlunoCreateDTO alunoCreateDTO){
+        Aluno aluno = alunoService.update(alunoCreateDTO);
+        return ResponseEntity.ok().body(AlunoMapper.toAlunoDTO(aluno));
+    }
 }
