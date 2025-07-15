@@ -2,12 +2,7 @@ package dac.orientaTCC.model.entities;
 
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -24,27 +19,30 @@ import lombok.Setter;
 public class Orientador {
 
     @Id
-    @NotBlank(message = "O SIAPE do orientador deve ser informado")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, unique = true)
     private String siape;
 
-    @NotBlank(message = "O email do orientador deve ser informado")
     @Email(message = "O email deve ser válido")
     @Column(nullable = false, unique = true)
     private String email;
 
-    @NotBlank(message = "A senha do orientador deve ser informada")
     @Column(nullable = false)
     private String senha;
 
-    @NotBlank(message = "A nome do orientador deve ser informado")
     @Column(nullable = false)
     private String nome;
 
-    @NotBlank(message = "A área de atuação do orientador deve ser informado")
     @Column(nullable = false)
     private String areaAtuacao;
 
     @OneToMany(mappedBy = "orientador", cascade = CascadeType.ALL)
     private List<TrabalhoAcademicoTCC> tccs;
+
+    @OneToOne
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private Usuario usuario;
 
 }

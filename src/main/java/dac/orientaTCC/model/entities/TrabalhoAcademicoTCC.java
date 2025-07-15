@@ -30,7 +30,7 @@ public class TrabalhoAcademicoTCC {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "siape_orientador", nullable = false)
+    @JoinColumn(name = "siape_orientador", nullable = false)//amiga muda o nome do relacionamneto para id_orientador pq no banco fica o id
     private Orientador orientador;
 
     @Column(name = "nome_trabalho", nullable = false)
@@ -43,7 +43,7 @@ public class TrabalhoAcademicoTCC {
     private List<Atividade> atividades;
 
     @OneToOne
-    @JoinColumn(name = "aluno_matricula", nullable = false)
+    @JoinColumn(name = "aluno_matricula", nullable = false)//amiga muda o nome do relacionamneto para id_alunor pq no banco fica o id
     private Aluno aluno;
 
 }
