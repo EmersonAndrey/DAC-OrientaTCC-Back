@@ -1,23 +1,29 @@
 package dac.orientaTCC.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import java.util.List;
+import java.util.stream.Collectors;
 
-import dac.orientaTCC.model.dto.TrabalhoAcademicoTCCCreateDTO;
-import dac.orientaTCC.model.dto.TrabalhoAcademicoTCCResponseDTO;
+import org.modelmapper.ModelMapper;
+
+import dac.orientaTCC.dto.TrabalhoAcademicoTCCCreateDTO;
+import dac.orientaTCC.dto.TrabalhoAcademicoTCCResponseDTO;
 import dac.orientaTCC.model.entities.TrabalhoAcademicoTCC;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
-@Mapper(componentModel = "spring")
-public interface TrabalhoAcademicoTCCMapper {
-    
-    //Entity -> DTO
-    TrabalhoAcademicoTCCResponseDTO toDTO(TrabalhoAcademicoTCC entity);
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class TrabalhoAcademicoTCCMapper {
 
-    //DTOO -> Entity
-    @Mapping(target = "id", ignore = true) // ID não vem na criação
-    @Mapping(target = "orientador", ignore = true) // será setado no service
-    @Mapping(target = "aluno", ignore = true)      // será setado no service
-    //@Mapping(target = "atividades", source = "atividades") quando colocar as atividades no dto
-    TrabalhoAcademicoTCC toEntity(TrabalhoAcademicoTCCCreateDTO dto);
-    
+    public static TrabalhoAcademicoTCCResponseDTO toDTO(TrabalhoAcademicoTCC entity) {
+        return new ModelMapper().map(entity, TrabalhoAcademicoTCCResponseDTO.class);
+    }
+
+    public static TrabalhoAcademicoTCC toTrabalhoAcademicoTCC(TrabalhoAcademicoTCCCreateDTO create) {
+        return new ModelMapper().map(create, TrabalhoAcademicoTCC.class);
+    }
+
+    public static List<TrabalhoAcademicoTCCResponseDTO> toTrabalhoAcademicoList(List<TrabalhoAcademicoTCC> list){
+        return list.stream().map(trabalho -> toDTO(trabalho)).collect(Collectors.toList());
+    }
+
 }

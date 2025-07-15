@@ -29,6 +29,7 @@ public class SpringSecurityConfig {
                 .httpBasic(basic -> basic.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/api/alunos").permitAll()
+                        .requestMatchers(HttpMethod.POST, "api/trabalhoAcademico").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/orientadores").permitAll()
                         .requestMatchers(HttpMethod.POST, "api/auth").permitAll()//libera o acesso de forma publica para todos os usuarios que queiram realizar a autenticação na api
                         .anyRequest().authenticated()//isso defini que todas as outras requiçoes precisam de autenticação para serem utilizadas

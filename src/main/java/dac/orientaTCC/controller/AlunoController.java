@@ -22,7 +22,7 @@ public class AlunoController {
     private final AlunoService alunoService;
 
     @PostMapping
-    @PreAuthorize("hasRole('COORDENADOR')")
+    //@PreAuthorize("hasRole('COORDENADOR')")
     public ResponseEntity<AlunoResponseDTO> create(@RequestBody @Valid AlunoCreateDTO alunoCreateDTO){
         AlunoResponseDTO aluno = alunoService.create(alunoCreateDTO);
 
