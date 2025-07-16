@@ -77,11 +77,17 @@ public class OrientadorService {
 
         Orientador orientadorBuscado = findBySiape(orientadorCreateDTO.getSiape());
 
-        orientadorBuscado.setNome(orientadorCreateDTO.getNome());
+        if(!orientadorCreateDTO.getNome().isEmpty()){
+            orientadorBuscado.setNome(orientadorCreateDTO.getNome());
+        }
 
-        orientadorBuscado.setAreaAtuacao(orientadorCreateDTO.getAreaAtuacao());
+        if(!orientadorCreateDTO.getAreaAtuacao().isEmpty()){
+            orientadorBuscado.setAreaAtuacao(orientadorCreateDTO.getAreaAtuacao());
+        }
 
-        orientadorBuscado.getUsuario().setSenha(passwordEncoder.encode(orientadorCreateDTO.getSenha()));
+        if(!orientadorCreateDTO.getSenha().isEmpty()){
+            orientadorBuscado.getUsuario().setSenha(passwordEncoder.encode(orientadorCreateDTO.getSenha()));
+        }
 
         return orientadorBuscado;
     }
