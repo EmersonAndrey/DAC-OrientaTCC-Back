@@ -34,7 +34,7 @@ public class TrabalhoAcademicoTCCService {
         entity.setVersao(null);
 
         entity.setOrientador(orientadorService.findBySiape(dto.getSiapeOrientador()));
-        entity.setAluno(alunoService.findById(dto.getIdAluno()));
+        entity.setAluno(alunoService.findByMatricula(dto.getMatriculaAluno()));
 
         TrabalhoAcademicoTCC salvo = trabalhoAcademicoTCCRepository.save(entity);
 

@@ -31,7 +31,7 @@ public class AtividadeDTO {
 	@NotBlank(message = "A descrição da atividade deve ser informada")
 	private String descricao;
 
-	private TrabalhoAcademicoTCC trabalhoAcademico;
+	private Long idTrabalhoAcademico;
 
 	private List<PdfDTO> pdfs;
 

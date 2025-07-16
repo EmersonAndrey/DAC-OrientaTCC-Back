@@ -1,9 +1,11 @@
 package dac.orientaTCC.dto;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import dac.orientaTCC.enums.StatusTrabalho;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -29,9 +31,13 @@ public class TrabalhoAcademicoTCCCreateDTO {
     @NotBlank(message = "O siape do orientador deve ser informado")
     private String siapeOrientador;
 
-    @NotBlank(message = "O nome do aluno deve ser informado")
-    private Long idAluno;
+    @NotNull(message = "A matricula aluno deve ser informado")
+    private String matriculaAluno;
 
-    //private List<AtividadeDTO> atividades;
+    @NotNull(message = "O nome do aluno deve ser informado")
+    private StatusTrabalho status;
+
+    private List<AtividadeDTO> atividades;
+
 }
 

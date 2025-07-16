@@ -1,9 +1,11 @@
 package dac.orientaTCC.dto;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import dac.orientaTCC.enums.StatusTrabalho;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +25,7 @@ public class TrabalhoAcademicoTCCResponseDTO {
 
     private String nomeOrientador;
     private String nomeAluno;
-
-    //private List<AtividadeDTO> atividades;
+    private StatusTrabalho status;
+    private List<AtividadeDTO> atividades;
+    
 }

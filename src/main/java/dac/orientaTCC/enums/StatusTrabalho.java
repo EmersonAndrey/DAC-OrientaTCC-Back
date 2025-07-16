@@ -1,19 +1,17 @@
 package dac.orientaTCC.enums;
 
-public enum TipoUsuario {
-
-    ALUNO("Aluno"),
-    ORIENTADOR("Orientador"),
-    COORDENADOR("Coordenador");
+public enum StatusTrabalho {
+    
+    CONCLUIDO("Concluido"),
+    EM_ANDAMENTO("Em andamento");
 
     private final String descricao;
 
-    TipoUsuario(String descricao) {
+    StatusTrabalho(String descricao) {
         this.descricao = descricao;
     }
 
     public String getDescricao() {
         return descricao;
     }
-
 }

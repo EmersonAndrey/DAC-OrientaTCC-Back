@@ -18,15 +18,21 @@ public class EmailService {
     private final String apiKey;
     private final String senderEmail;
 
-    public EmailService() {
+    private final UsuarioService usuarioService;
+
+    public EmailService(UsuarioService usuarioService) {
         Dotenv dotenv = Dotenv.load();
         this.apiKey = dotenv.get("BREVO_API_KEY");
         this.senderEmail = dotenv.get("BREVO_SENDER_EMAIL");
+        this.usuarioService = usuarioService;
     }
 
-    public void enviarEmail(String to, String nome) {
+    public void enviarEmail(String email, String nome) {
 
         String novaSenha = GeradorSenha.gerarSenhaAleatoria();
+
+        usuarioService.editarSenha(email, novaSenha);
+
         String html = gerarHtmlRecuperacaoSenha(nome, novaSenha);
 
         RestTemplate rt = new RestTemplate();
@@ -36,7 +42,7 @@ public class EmailService {
 
         Map<String, Object> body = Map.of(
                 "sender", Map.of("email", senderEmail, "name", "Orienta TCC"),
-                "to", List.of(Map.of("email", to)),
+                "to", List.of(Map.of("email", email)),
                 "subject", "Recuperação de senha",
                 "htmlContent", html);
 

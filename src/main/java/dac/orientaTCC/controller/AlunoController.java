@@ -37,7 +37,7 @@ public class AlunoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(aluno);
     }
 
-    @PreAuthorize("hasRole('ALUNO')")
+    //@PreAuthorize("hasRole('ALUNO')")
     @GetMapping("/{id}")
     public ResponseEntity<AlunoResponseDTO> findById(@PathVariable Long id){
         Aluno aluno = alunoService.findById(id);
@@ -51,7 +51,7 @@ public class AlunoController {
         return ResponseEntity.ok(AlunoMapper.toAlunoDTO(aluno));
     }
 
-    @PreAuthorize("hasRole('COORDENADOR') OR #matricula == authentication.principal.identificador")
+    //@PreAuthorize("hasRole('COORDENADOR') OR #matricula == authentication.principal.identificador")
     @GetMapping("/matricula/{matricula}")
     public ResponseEntity<AlunoResponseDTO> findByMatricula(@PathVariable String matricula){
 
@@ -59,14 +59,14 @@ public class AlunoController {
         return ResponseEntity.ok(AlunoMapper.toAlunoDTO(aluno));
     }
 
-    @PreAuthorize("hasRole('COORDENADOR')")
-    @GetMapping
+    //@PreAuthorize("hasRole('COORDENADOR')")
+    @GetMapping("/")
     public ResponseEntity<List<AlunoResponseDTO>> findAll(){
         List<Aluno> alunos = alunoService.findAll();
         return ResponseEntity.ok(AlunoMapper.toListAlunoDTO(alunos));
     }
 
-    @PreAuthorize("hasRole('COORDENADOR')")
+    //@PreAuthorize("hasRole('COORDENADOR')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> removeById(@PathVariable Long id){
         alunoService.remove(id);

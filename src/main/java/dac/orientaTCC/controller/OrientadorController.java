@@ -31,7 +31,7 @@ public class OrientadorController {
         return ResponseEntity.status(HttpStatus.CREATED).body(orientadorResponseDTO);
     }
 
-    @PreAuthorize("hasRole('COORDENADOR') or #id == authentication.principal.codigoUsuario")
+    //@PreAuthorize("hasRole('COORDENADOR') or #id == authentication.principal.codigoUsuario")
     @GetMapping("/{id}")
     public ResponseEntity<OrientadorResponseDTO> findById(@PathVariable Long id){
         Orientador orientador = orientadorService.findById(id);
@@ -45,28 +45,28 @@ public class OrientadorController {
         return ResponseEntity.ok(OrientadorMapper.toOrientadorDTO(orientador));
     }
 
-    @PreAuthorize("hasRole('COORDENADOR') OR #siape == authentication.principal.identificador")
+    //@PreAuthorize("hasRole('COORDENADOR') OR #siape == authentication.principal.identificador")
     @GetMapping("/siape/{siape}")
     public ResponseEntity<OrientadorResponseDTO> findBySiape(@PathVariable String siape){
         Orientador orientador = orientadorService.findBySiape(siape);
         return ResponseEntity.ok(OrientadorMapper.toOrientadorDTO(orientador));
     }
 
-    @PreAuthorize("hasRole('COORDENADOR')")
-    @GetMapping
+    //@PreAuthorize("hasRole('COORDENADOR')")
+    @GetMapping("/")
     public ResponseEntity<List<OrientadorResponseDTO>> findAll(){
         List<Orientador> orientadores = orientadorService.findAll();
         return ResponseEntity.ok(OrientadorMapper.toListOrientadorDTO(orientadores));
     }
 
-    @PreAuthorize("hasRole('ORIENTADOR') AND #orientadorCreateDTO.getSiape == authentication.principal.identificador")
-    @PutMapping
+    //@PreAuthorize("hasRole('ORIENTADOR') AND #orientadorCreateDTO.getSiape == authentication.principal.identificador")
+    @PutMapping("/")
     public ResponseEntity<OrientadorResponseDTO> update(@RequestBody OrientadorCreateDTO orientadorCreateDTO){
         Orientador orientador = orientadorService.update(orientadorCreateDTO);
         return ResponseEntity.ok().body(OrientadorMapper.toOrientadorDTO(orientador));
     }
 
-    @PreAuthorize("hasRole('COORDENADOR')")
+    //@PreAuthorize("hasRole('COORDENADOR')")
     @PutMapping("/siape/{siape}")
     public ResponseEntity<OrientadorResponseDTO> updateRole(@RequestBody OrientadorCreateDTO orientadorCreateDTO){
         log.info("log 1 entrou");

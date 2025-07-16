@@ -18,7 +18,7 @@ public class AtividadeMapper {
 		atividade.setDescricao(atividadeDTO.getDescricao());
 		atividade.setNome(atividadeDTO.getNome());
 		atividade.setStatus(atividadeDTO.getStatusPdf());
-		atividade.setTrabalho(atividadeDTO.getTrabalhoAcademico());
+		//atividade.set(atividadeDTO.getTrabalhoAcademico());
 		
 		// Aqui faz a conversão de PdfDTO para PDF (se a lista não for nula)
         if (atividadeDTO.getPdfs() != null) {

@@ -89,7 +89,7 @@ public class AtividadeService {
 		atividadeExistente.setComentario(atividadeDTO.getComentarios());
 		atividadeExistente.setDataEntrega(atividadeDTO.getDataEntrega());
 		atividadeExistente.setStatus(atividadeDTO.getStatusPdf());
-		atividadeExistente.setTrabalho(atividadeDTO.getTrabalhoAcademico());
+		//atividadeExistente.setTrabalho(atividadeDTO.getTrabalhoAcademico());
 
 		// Adiciona novos PDFs 
 		if (arquivos != null && !arquivos.isEmpty()) {

@@ -7,9 +7,12 @@ import org.springframework.data.annotation.Version;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import dac.orientaTCC.enums.StatusTrabalho;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -52,6 +55,10 @@ public class TrabalhoAcademicoTCC {
     @OneToOne
     @JoinColumn(name = "id_aluno", nullable = false)
     private Aluno aluno;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private StatusTrabalho status;
 
     @Version
     private Integer versao;

@@ -25,7 +25,7 @@ public class UsuarioController {
     private final UsuarioService usuarioService;
 
     @PatchMapping("/{id}")
-    @PreAuthorize("hasAnyRole('COORDENADOR','ALUNO', 'ORIENTADOR') AND (#id == authentication.principal.id)") // hasAnyRole('COORDENADOR','ALUNO',
+    //@PreAuthorize("hasAnyRole('COORDENADOR','ALUNO', 'ORIENTADOR') AND (#id == authentication.principal.id)") // hasAnyRole('COORDENADOR','ALUNO',
                                                                                                               // 'ORIENTADOR')
                                                                                                               // RECEBE
                                                                                                               // UMA
@@ -39,11 +39,8 @@ public class UsuarioController {
                                                                                                               // SUA
                                                                                                               // PROPRIA
                                                                                                               // SENHA
-    public ResponseEntity<Void> updatePassword(@PathVariable Long id,
-            @Valid @RequestBody UsuarioSenhaDTO usuarioSenhaDTO) {
-        usuarioService.editarSenha(id, usuarioSenhaDTO.getSenhaAtual(), usuarioSenhaDTO.getNovaSenha(),
-                usuarioSenhaDTO.getConfirmaSenha());
-
+    public ResponseEntity<Void> updatePassword(@PathVariable String matriculaOuSiape, @PathVariable String novaSenha) {
+        usuarioService.editarSenha(matriculaOuSiape, novaSenha);
         return ResponseEntity.noContent().build();
     }
 
