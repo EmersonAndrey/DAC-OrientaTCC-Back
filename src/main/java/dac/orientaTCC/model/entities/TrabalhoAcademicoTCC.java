@@ -1,9 +1,13 @@
 package dac.orientaTCC.model.entities;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.data.annotation.Version;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,7 +15,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +28,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name = "trabalho_academico")
 public class TrabalhoAcademicoTCC {
 
     @Id
@@ -38,8 +45,9 @@ public class TrabalhoAcademicoTCC {
     @Column(name = "data_inicio", nullable = false)
     private LocalDate dataInicio;
 
-    //@OneToMany(mappedBy = "trabalho", cascade = CascadeType.ALL, orphanRemoval = true)
-    //private List<Atividade> atividades;
+    @OneToMany(mappedBy = "trabalho", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Atividade> atividades;
 
     @OneToOne
     @JoinColumn(name = "id_aluno", nullable = false)

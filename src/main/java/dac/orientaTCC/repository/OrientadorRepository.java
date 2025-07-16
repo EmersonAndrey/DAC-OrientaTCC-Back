@@ -1,11 +1,11 @@
 package dac.orientaTCC.repository;
 
-import dac.orientaTCC.model.entities.Aluno;
-import dac.orientaTCC.model.entities.Orientador;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import dac.orientaTCC.model.entities.Orientador;
 
 @Repository
 public interface OrientadorRepository extends JpaRepository<Orientador, Long> {
