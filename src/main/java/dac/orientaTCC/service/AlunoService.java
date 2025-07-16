@@ -81,11 +81,11 @@ public class AlunoService {
     public Aluno update(AlunoCreateDTO alunoCreateDTO) {
         Aluno alunoBuscado = findByMatricula(alunoCreateDTO.getMatricula());
 
-        if(!alunoCreateDTO.getNome().isEmpty()){
+        if(!alunoCreateDTO.getNome().equals(alunoBuscado.getNome())){
             alunoBuscado.setNome(alunoCreateDTO.getNome());
         }
 
-        if(!alunoCreateDTO.getSenha().isEmpty()){
+        if(alunoCreateDTO.getSenha() != null){
             alunoBuscado.getUsuario().setSenha(passwordEncoder.encode(alunoCreateDTO.getSenha()));
         }
 
