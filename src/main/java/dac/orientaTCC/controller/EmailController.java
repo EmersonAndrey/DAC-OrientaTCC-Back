@@ -1,4 +1,4 @@
-package dac.orientaTCC.controller;
+/*package dac.orientaTCC.controller;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,4 +23,4 @@ public class EmailController {
         return "Enviado para " + to;
     }
 
-}
+}*/
