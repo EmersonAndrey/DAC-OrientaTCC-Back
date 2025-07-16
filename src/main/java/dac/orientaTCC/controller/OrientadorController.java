@@ -37,7 +37,7 @@ public class OrientadorController {
         return ResponseEntity.ok().body(OrientadorMapper.toOrientadorDTO(orientador));
     }
 
-    @PreAuthorize("hasRole('COORDENADOR') OR #email == authentication.principal.username")
+    //@PreAuthorize("hasRole('COORDENADOR') OR #email == authentication.principal.username")
     @GetMapping("/email/{email}")
     public ResponseEntity<OrientadorResponseDTO> findByEmail(@PathVariable String email){
         Orientador orientador = orientadorService.findByEmail(email);

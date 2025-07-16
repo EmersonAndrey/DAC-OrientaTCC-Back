@@ -28,14 +28,14 @@ public class TrabalhoAcademicoTCCController {
     private final TrabalhoAcademicoTCCService trabalhoAcademicoTCCService;
 
     @PostMapping
-    @PreAuthorize("hasRole('ALUNO')")
+    //@PreAuthorize("hasRole('ALUNO')")
     public ResponseEntity<TrabalhoAcademicoTCCResponseDTO> create(@RequestBody TrabalhoAcademicoTCCCreateDTO dto) {
         TrabalhoAcademicoTCCResponseDTO response = trabalhoAcademicoTCCService.create(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('COORDENADOR')")
+    //@PreAuthorize("hasRole('COORDENADOR')")
     public ResponseEntity<TrabalhoAcademicoTCCResponseDTO> findById(@PathVariable Long id) {
         TrabalhoAcademicoTCC response = trabalhoAcademicoTCCService.findById(id);
         return ResponseEntity.ok().body(TrabalhoAcademicoTCCMapper.toDTO(response));
@@ -49,14 +49,14 @@ public class TrabalhoAcademicoTCCController {
     }
 
     @GetMapping("/siape/{siape}")
-    @PreAuthorize("hasRole('ORIENTADOR')")
+    //@PreAuthorize("hasRole('ORIENTADOR')")
     public ResponseEntity<List<TrabalhoAcademicoTCCResponseDTO>> findByOrientadorSiape(@PathVariable String siape) {
         List<TrabalhoAcademicoTCC> response = trabalhoAcademicoTCCService.findAllByOrientadorSiape(siape);
         return ResponseEntity.ok().body(TrabalhoAcademicoTCCMapper.toTrabalhoAcademicoList(response));
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('COORDENADOR')")
+    //@PreAuthorize("hasRole('COORDENADOR')")
     public ResponseEntity<Void> removeById(@PathVariable Long id) {
         trabalhoAcademicoTCCService.removeById(id);
         return ResponseEntity.noContent().build();

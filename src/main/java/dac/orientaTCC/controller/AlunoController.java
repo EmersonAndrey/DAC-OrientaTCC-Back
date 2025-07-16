@@ -35,7 +35,7 @@ public class AlunoController {
         return ResponseEntity.ok().body(alunoService.findById(id));
     }
 
-    @PreAuthorize("hasRole('COORDENADOR') OR #email == authentication.principal.username")
+    //@PreAuthorize("hasRole('COORDENADOR') OR #email == authentication.principal.username")
     @GetMapping("/email/{email}")
     public ResponseEntity<AlunoResponseDTO> findByEmail(@PathVariable String email){
         Aluno aluno = alunoService.findByEmail(email);
