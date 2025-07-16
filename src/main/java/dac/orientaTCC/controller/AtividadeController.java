@@ -32,9 +32,8 @@ public class AtividadeController {
 
 	@PostMapping("/salvarAtividade")
 	public ResponseEntity<?> salvarAtividade(@Valid @RequestPart("atividade") AtividadeDTO atividadeDTO,
-			@RequestPart(value = "arquivos", required = false) List<MultipartFile> arquivos,
-			@RequestHeader("tipoUser") String tipoUser) {
-		return atividadeService.salvarAtividade(atividadeDTO, arquivos, tipoUser);
+			@RequestPart(value = "arquivos", required = false) List<MultipartFile> arquivos) {
+		return atividadeService.salvarAtividade(atividadeDTO, arquivos);
 	}
 
 	@PutMapping(value = "/editar/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

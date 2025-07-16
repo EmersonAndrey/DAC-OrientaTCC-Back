@@ -16,4 +16,6 @@ public enum TipoUsuario {
         return descricao;
     }
 
+	
+
 }

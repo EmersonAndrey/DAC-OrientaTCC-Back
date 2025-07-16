@@ -10,17 +10,21 @@ import dac.orientaTCC.repository.AlunoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class AlunoService {
 
     private final AlunoRepository alunoRepository;
     private final UsuarioService usuarioService;
+    private final PasswordEncoder passwordEncoder;
 
 
     @Transactional
@@ -30,7 +34,7 @@ public class AlunoService {
 
     @Transactional
     public AlunoResponseDTO create(@Valid AlunoCreateDTO alunoCreateDTO) {
-       Usuario usuario = usuarioService.salvar(new UsuarioCreateDTO(alunoCreateDTO.getEmail(), alunoCreateDTO.getSenha(), "ROLE_ALUNO"));
+        Usuario usuario = usuarioService.salvar(new UsuarioCreateDTO(alunoCreateDTO.getEmail(), alunoCreateDTO.getSenha(), "ROLE_ALUNO"));
         Aluno aluno = AlunoMapper.toAluno(alunoCreateDTO);
         aluno.setUsuario(usuario);
 
@@ -71,5 +75,20 @@ public class AlunoService {
     @Transactional
     public void remove(Long id) {
         //esperando vcs
+    }
+
+    @Transactional
+    public Aluno update(AlunoCreateDTO alunoCreateDTO) {
+        Aluno alunoBuscado = findByMatricula(alunoCreateDTO.getMatricula());
+
+        if(!alunoCreateDTO.getNome().isEmpty()){
+            alunoBuscado.setNome(alunoCreateDTO.getNome());
+        }
+
+        if(!alunoCreateDTO.getSenha().isEmpty()){
+            alunoBuscado.getUsuario().setSenha(passwordEncoder.encode(alunoCreateDTO.getSenha()));
+        }
+
+        return alunoBuscado;
     }
 }

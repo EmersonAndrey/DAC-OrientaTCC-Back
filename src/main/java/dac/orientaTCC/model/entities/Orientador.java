@@ -33,13 +33,6 @@ public class Orientador {
     @Column(nullable = false, unique = true)
     private String siape;
 
-    @Email(message = "O email deve ser válido")
-    @Column(nullable = false, unique = true)
-    private String email;
-
-    @Column(nullable = false)
-    private String senha;
-
     @Column(nullable = false)
     private String nome;
 

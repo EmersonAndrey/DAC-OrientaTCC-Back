@@ -24,25 +24,9 @@ public class AtividadeService {
 	@Autowired
 	private AtividadeRepository atividadeRepository;
 
-	/*public ResponseEntity<?> salvarAtividade(AtividadeDTO atividadeDTO, String tipoUser) {
 
-		if (!tipoUser.equalsIgnoreCase("ORIENTADOR")) {
-			return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Apenas Coordenadores podem criar uma atividade.");
-		}
-
-		Atividade atividade = AtividadeMapper.atividadeMapper(atividadeDTO);
-
-		Atividade atividadeSalva = atividadeRepository.save(atividade);
-
-		return ResponseEntity.status(HttpStatus.CREATED).body(atividadeSalva);
-
-	}*/
-
-	public ResponseEntity<?> salvarAtividade(AtividadeDTO atividadeDTO, List<MultipartFile> arquivos,
-			String tipoUser) {
-		if (!tipoUser.equalsIgnoreCase("ORIENTADOR")) {
-			return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Apenas Orientador podem criar uma atividade.");
-		}
+	public ResponseEntity<?> salvarAtividade(AtividadeDTO atividadeDTO, List<MultipartFile> arquivos) {
+	
 
 		try {
 			List<PdfDTO> pdfDTOs = new ArrayList<>();
