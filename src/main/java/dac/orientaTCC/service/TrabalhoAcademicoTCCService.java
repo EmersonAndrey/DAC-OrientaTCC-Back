@@ -81,4 +81,10 @@ public class TrabalhoAcademicoTCCService {
         TrabalhoAcademicoTCC trabalhoExistente = findById(id);
         trabalhoAcademicoTCCRepository.delete(trabalhoExistente);
     }
+
+    public TrabalhoAcademicoTCC findByIdOrientador(Long id) {
+        TrabalhoAcademicoTCC trabalho = trabalhoAcademicoTCCRepository.findByOrientadorId(id);
+
+        return trabalho;
+    }
 }

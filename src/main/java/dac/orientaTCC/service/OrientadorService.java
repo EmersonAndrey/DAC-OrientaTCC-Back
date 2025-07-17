@@ -2,15 +2,19 @@ package dac.orientaTCC.service;
 
 import dac.orientaTCC.dto.*;
 import dac.orientaTCC.enums.Role;
+import dac.orientaTCC.exception.NaoPodeRemoverOrientadorException;
 import dac.orientaTCC.mapper.OrientadorMapper;
 import dac.orientaTCC.model.entities.Aluno;
 import dac.orientaTCC.model.entities.Orientador;
+import dac.orientaTCC.model.entities.TrabalhoAcademicoTCC;
 import dac.orientaTCC.model.entities.Usuario;
+import dac.orientaTCC.repository.AlunoRepository;
 import dac.orientaTCC.repository.OrientadorRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,13 +22,28 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Slf4j
-@RequiredArgsConstructor
 @Service
 public class OrientadorService {
 
     private final OrientadorRepository orientadorRepository;
     private final UsuarioService usuarioService;
     private final PasswordEncoder passwordEncoder;
+    private final AlunoRepository alunoRepository;
+    private final TrabalhoAcademicoTCCService trabalhoAcademicoTCCService;
+
+    public OrientadorService(
+            OrientadorRepository orientadorRepository,
+            AlunoRepository alunoRepository,
+            UsuarioService usuarioService,
+            PasswordEncoder passwordEncoder,
+            @Lazy TrabalhoAcademicoTCCService trabalhoAcademicoTCCService
+    ) {
+        this.orientadorRepository = orientadorRepository;
+        this.alunoRepository = alunoRepository;
+        this.usuarioService = usuarioService;
+        this.passwordEncoder = passwordEncoder;
+        this.trabalhoAcademicoTCCService = trabalhoAcademicoTCCService;
+    }
 
     @Transactional
     public Orientador save(Orientador orientador) { //colocar o tratamento depois
@@ -52,7 +71,8 @@ public class OrientadorService {
 
     @Transactional(readOnly = true)
     public Orientador findByEmail(String email) {
-        return orientadorRepository.findByUsuarioEmail(email);
+        return orientadorRepository.findByUsuarioEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException("orientador não encontrado"));
     }
 
     @Transactional(readOnly = true)
@@ -98,5 +118,19 @@ public class OrientadorService {
 
         orientadorBuscado.getUsuario().setTipoRole(Role.ROLE_COORDENADOR);
         return orientadorBuscado;
+    }
+
+    @Transactional
+    public void remove(String email) {
+        Orientador orientador = orientadorRepository.findByUsuarioEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException("Orientador não encontrado"));
+
+        TrabalhoAcademicoTCC trabalhoAcademico = trabalhoAcademicoTCCService.findByIdOrientador(orientador.getId());
+
+        if (trabalhoAcademico != null) {
+            throw new NaoPodeRemoverOrientadorException("Não é permitido apagar um orientador que esteja relacionado a um Trabalho Academico");
+        }
+
+        orientadorRepository.delete(orientador);
     }
 }

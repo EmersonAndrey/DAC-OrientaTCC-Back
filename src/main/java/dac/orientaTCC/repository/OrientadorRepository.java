@@ -10,7 +10,7 @@ import dac.orientaTCC.model.entities.Orientador;
 @Repository
 public interface OrientadorRepository extends JpaRepository<Orientador, Long> {
 
-    Orientador findByUsuarioEmail(String email);
+    Optional<Orientador> findByUsuarioEmail(String email);
 
     Orientador findBySiape(String siape);
 
