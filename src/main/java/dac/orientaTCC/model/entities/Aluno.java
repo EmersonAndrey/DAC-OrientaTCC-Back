@@ -32,7 +32,8 @@ public class Aluno {
     @Column(nullable = false)
     private String nome;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
+
 }

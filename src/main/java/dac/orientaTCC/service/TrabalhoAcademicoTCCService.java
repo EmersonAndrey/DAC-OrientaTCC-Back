@@ -60,6 +60,13 @@ public class TrabalhoAcademicoTCCService {
     }
 
     @Transactional(readOnly = true)
+    public TrabalhoAcademicoTCC findByIdAluno(Long id) {
+        TrabalhoAcademicoTCC trabalho = trabalhoAcademicoTCCRepository.findByAlunoId(id);
+
+        return trabalho;
+    }
+
+    @Transactional(readOnly = true)
     public List<TrabalhoAcademicoTCC> findAllByOrientadorSiape(String siape) {
         return trabalhoAcademicoTCCRepository.findByOrientadorSiape(siape);
     }

@@ -3,28 +3,47 @@ package dac.orientaTCC.service;
 import dac.orientaTCC.dto.AlunoCreateDTO;
 import dac.orientaTCC.dto.AlunoResponseDTO;
 import dac.orientaTCC.dto.UsuarioCreateDTO;
+import dac.orientaTCC.enums.StatusTrabalho;
+import dac.orientaTCC.exception.TrabalhoAcademicoEmAndamentoExceptionn;
+import dac.orientaTCC.exception.TrabalhoAcademicoNaoEncontradoPorMatriculaException;
 import dac.orientaTCC.mapper.AlunoMapper;
 import dac.orientaTCC.model.entities.Aluno;
+import dac.orientaTCC.model.entities.TrabalhoAcademicoTCC;
 import dac.orientaTCC.model.entities.Usuario;
 import dac.orientaTCC.repository.AlunoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static dac.orientaTCC.enums.StatusTrabalho.EM_ANDAMENTO;
+
 @Slf4j
-@RequiredArgsConstructor
 @Service
 public class AlunoService {
 
     private final AlunoRepository alunoRepository;
     private final UsuarioService usuarioService;
     private final PasswordEncoder passwordEncoder;
+    private final TrabalhoAcademicoTCCService trabalhoAcademicoTCCService;
+
+    public AlunoService(
+            AlunoRepository alunoRepository,
+            UsuarioService usuarioService,
+            PasswordEncoder passwordEncoder,
+            @Lazy TrabalhoAcademicoTCCService trabalhoAcademicoTCCService
+    ) {
+        this.alunoRepository = alunoRepository;
+        this.usuarioService = usuarioService;
+        this.passwordEncoder = passwordEncoder;
+        this.trabalhoAcademicoTCCService = trabalhoAcademicoTCCService;
+    }
 
 
     @Transactional
@@ -57,9 +76,9 @@ public class AlunoService {
         );
     }
 
-    @Transactional(readOnly = true)
     public Aluno findByEmail(String email) {
-        return alunoRepository.findByUsuarioEmail(email);
+        return alunoRepository.findByUsuarioEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado"));
     }
 
     @Transactional(readOnly = true)
@@ -73,8 +92,17 @@ public class AlunoService {
     }
 
     @Transactional
-    public void remove(Long id) {
-        //esperando vcs
+    public void remove(String email) {
+        Aluno aluno = alunoRepository.findByUsuarioEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado"));
+
+        TrabalhoAcademicoTCC trabalhoAcademico = trabalhoAcademicoTCCService.findByIdAluno(aluno.getId());
+
+        if (trabalhoAcademico != null) {
+            trabalhoAcademicoTCCService.removeById(trabalhoAcademico.getId());
+        }
+
+        alunoRepository.delete(aluno);
     }
 
     @Transactional

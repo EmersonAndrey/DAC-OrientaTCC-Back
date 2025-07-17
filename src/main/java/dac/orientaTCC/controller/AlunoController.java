@@ -67,9 +67,9 @@ public class AlunoController {
     }
 
     //@PreAuthorize("hasRole('COORDENADOR')")
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> removeById(@PathVariable Long id){
-        alunoService.remove(id);
+    @DeleteMapping("/email/{email}")
+    public ResponseEntity<Void> removeByEmail(@PathVariable String email){
+        alunoService.remove(email);
         return ResponseEntity.noContent().build();
     }
 
