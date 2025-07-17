@@ -74,4 +74,11 @@ public class OrientadorController {
         log.info("log 2 passou do service");
         return ResponseEntity.ok().body(OrientadorMapper.toOrientadorDTO(orientador));
     }
+
+    //@PreAuthorize("hasRole('COORDENADOR')")
+    @DeleteMapping("/email/{email}")
+    public ResponseEntity<Void> removeByEmail(@PathVariable String email){
+        orientadorService.remove(email);
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -18,4 +18,6 @@ public interface TrabalhoAcademicoTCCRepository extends JpaRepository<TrabalhoAc
     List<TrabalhoAcademicoTCC> findByOrientadorSiape(String orientador_Siape);
 
     TrabalhoAcademicoTCC findByAlunoId(Long id);
+
+    TrabalhoAcademicoTCC findByOrientadorId(Long id);
 }

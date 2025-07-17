@@ -42,7 +42,7 @@ public class Orientador {
     @OneToMany(mappedBy = "orientador", cascade = CascadeType.ALL)
     private List<TrabalhoAcademicoTCC> tccs;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
