@@ -27,7 +27,7 @@ public class TrabalhoAcademicoTCCController {
 
     private final TrabalhoAcademicoTCCService trabalhoAcademicoTCCService;
 
-    @PostMapping
+    @PostMapping("/")
     //@PreAuthorize("hasRole('ALUNO')")
     public ResponseEntity<TrabalhoAcademicoTCCResponseDTO> create(@RequestBody TrabalhoAcademicoTCCCreateDTO dto) {
         TrabalhoAcademicoTCCResponseDTO response = trabalhoAcademicoTCCService.create(dto);
