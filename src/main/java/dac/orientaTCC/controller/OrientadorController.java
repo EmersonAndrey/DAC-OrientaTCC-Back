@@ -23,8 +23,8 @@ public class OrientadorController {
 
     private final OrientadorService orientadorService;
 
-    @PostMapping
     //@PreAuthorize("hasRole('COORDENADOR')")
+    @PostMapping("/")
     public ResponseEntity<OrientadorResponseDTO> create(@RequestBody @Valid OrientadorCreateDTO orientadorCreateDTO){
         OrientadorResponseDTO orientadorResponseDTO = orientadorService.create(orientadorCreateDTO);
         log.info("orientador email: {}", orientadorResponseDTO.getEmail());

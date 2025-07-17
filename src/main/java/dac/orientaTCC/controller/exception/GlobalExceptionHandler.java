@@ -1,5 +1,9 @@
 package dac.orientaTCC.controller.exception;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -22,6 +26,23 @@ public class GlobalExceptionHandler {
                 "Erro de validação nos campos.",
                 ex.getBindingResult());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<Map<String, String>> handleDataIntegrityViolationException(
+            DataIntegrityViolationException ex) {
+        Map<String, String> response = new HashMap<>();
+
+        String mensagem = "Entrada duplicada no banco de dados.";
+
+        if (ex.getRootCause() != null && ex.getRootCause().getMessage().contains("Duplicate entry")) {
+            mensagem = "Usuário com identificador já existe no banco.";
+        } else {
+            mensagem = ex.getRootCause() != null ? ex.getRootCause().getMessage() : ex.getMessage();
+        }
+        response.put("message", mensagem);
+
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
 
     // excecao personalizada
