@@ -34,7 +34,7 @@ public class TrabalhoAcademicoTCCCreateDTO {
     @NotNull(message = "A matricula aluno deve ser informado")
     private String matriculaAluno;
 
-    @NotNull(message = "O nome do aluno deve ser informado")
+    @NotNull(message = "O status do trabalho deve ser informado")
     private StatusTrabalho status;
 
     private List<AtividadeDTO> atividades;
