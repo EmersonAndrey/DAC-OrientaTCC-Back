@@ -34,6 +34,9 @@ public class PDF {
     @Column(name = "conteudo", nullable = false, columnDefinition = "LONGBLOB")
     private byte[] conteudo;
 
+    @Column(name = "nome_usuario_adicionou_pdf", nullable = false)
+    private String nomeAdicionou;
+
     @ManyToOne
     @JoinColumn(name = "atividade_id", nullable = false)
     @JsonBackReference

@@ -36,8 +36,7 @@ public class OrientadorService {
             AlunoRepository alunoRepository,
             UsuarioService usuarioService,
             PasswordEncoder passwordEncoder,
-            @Lazy TrabalhoAcademicoTCCService trabalhoAcademicoTCCService
-    ) {
+            @Lazy TrabalhoAcademicoTCCService trabalhoAcademicoTCCService) {
         this.orientadorRepository = orientadorRepository;
         this.alunoRepository = alunoRepository;
         this.usuarioService = usuarioService;
@@ -46,13 +45,14 @@ public class OrientadorService {
     }
 
     @Transactional
-    public Orientador save(Orientador orientador) { //colocar o tratamento depois
+    public Orientador save(Orientador orientador) { 
         return orientadorRepository.save(orientador);
     }
 
     @Transactional
     public OrientadorResponseDTO create(@Valid OrientadorCreateDTO orientadorCreateDTO) {
-        Usuario usuario = usuarioService.salvar(new UsuarioCreateDTO(orientadorCreateDTO.getEmail(), orientadorCreateDTO.getSenha(), "ROLE_ORIENTADOR"));
+        Usuario usuario = usuarioService.salvar(new UsuarioCreateDTO(orientadorCreateDTO.getEmail(),
+                orientadorCreateDTO.getSenha(), "ROLE_ORIENTADOR"));
 
         Orientador orientador = OrientadorMapper.toOrientador(orientadorCreateDTO);
         orientador.setUsuario(usuario);
@@ -65,8 +65,7 @@ public class OrientadorService {
     @Transactional(readOnly = true)
     public Orientador findById(Long id) {
         return orientadorRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException(String.format("Usuario id = %s não encontrado", id))
-        );
+                () -> new EntityNotFoundException(String.format("Usuario id = %s não encontrado", id)));
     }
 
     @Transactional(readOnly = true)
@@ -88,8 +87,7 @@ public class OrientadorService {
     @Transactional(readOnly = true)
     public Orientador findByIdUsuario(Long id) {
         return orientadorRepository.findByUsuarioId(id).orElseThrow(
-                () -> new EntityNotFoundException(String.format("Usuario id = %s não encontrado", id))
-        );
+                () -> new EntityNotFoundException(String.format("Usuario id = %s não encontrado", id)));
     }
 
     @Transactional
@@ -97,15 +95,15 @@ public class OrientadorService {
 
         Orientador orientadorBuscado = findBySiape(orientadorCreateDTO.getSiape());
 
-        if(!orientadorCreateDTO.getNome().equals(orientadorBuscado.getNome())){
+        if (!orientadorCreateDTO.getNome().equals(orientadorBuscado.getNome())) {
             orientadorBuscado.setNome(orientadorCreateDTO.getNome());
         }
 
-        if(!orientadorCreateDTO.getAreaAtuacao().equals(orientadorBuscado.getAreaAtuacao())){
+        if (!orientadorCreateDTO.getAreaAtuacao().equals(orientadorBuscado.getAreaAtuacao())) {
             orientadorBuscado.setAreaAtuacao(orientadorCreateDTO.getAreaAtuacao());
         }
 
-        if(orientadorCreateDTO.getSenha() != null){
+        if (orientadorCreateDTO.getSenha() != null) {
             orientadorBuscado.getUsuario().setSenha(passwordEncoder.encode(orientadorCreateDTO.getSenha()));
         }
 
@@ -115,8 +113,14 @@ public class OrientadorService {
     @Transactional
     public Orientador updateRole(OrientadorCreateDTO orientadorCreateDTO) {
         Orientador orientadorBuscado = findBySiape(orientadorCreateDTO.getSiape());
+        Usuario usuario = usuarioService.buscarPorId(orientadorBuscado.getUsuario().getId());
 
-        orientadorBuscado.getUsuario().setTipoRole(Role.ROLE_COORDENADOR);
+        if (usuario.getTipoRole() == Role.ROLE_ORIENTADOR) {
+            orientadorBuscado.getUsuario().setTipoRole(Role.ROLE_COORDENADOR);
+        }else{
+            orientadorBuscado.getUsuario().setTipoRole(Role.ROLE_ORIENTADOR);
+        }
+
         return orientadorBuscado;
     }
 
@@ -128,7 +132,8 @@ public class OrientadorService {
         TrabalhoAcademicoTCC trabalhoAcademico = trabalhoAcademicoTCCService.findByIdOrientador(orientador.getId());
 
         if (trabalhoAcademico != null) {
-            throw new NaoPodeRemoverOrientadorException("Não é permitido apagar um orientador que esteja relacionado a um Trabalho Academico");
+            throw new NaoPodeRemoverOrientadorException(
+                    "Não é permitido apagar um orientador que esteja relacionado a um Trabalho Academico");
         }
 
         orientadorRepository.delete(orientador);
