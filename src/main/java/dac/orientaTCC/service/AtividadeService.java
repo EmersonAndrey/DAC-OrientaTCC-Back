@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import dac.orientaTCC.dto.AtividadeDTO;
 import dac.orientaTCC.dto.PdfDTO;
+import dac.orientaTCC.enums.StatusPDF;
 import dac.orientaTCC.mapper.AtividadeMapper;
 import dac.orientaTCC.model.entities.Atividade;
 import dac.orientaTCC.model.entities.PDF;
@@ -86,7 +87,7 @@ public class AtividadeService {
 		}
 
 		Atividade atividadeExistente = atividadeOptional.get();
-		TrabalhoAcademicoTCC trabalhoExistente = trabalhoAcademicoTCCService.findById(atividadeDTO.getIdTrabalho());//ADICIONEI esse objeto aqui
+		TrabalhoAcademicoTCC trabalhoExistente = trabalhoAcademicoTCCService.findById(atividadeDTO.getIdTrabalho());
 
 		atividadeExistente.setNome(atividadeDTO.getNome());
 		atividadeExistente.setDescricao(atividadeDTO.getDescricao());
@@ -95,6 +96,16 @@ public class AtividadeService {
 		atividadeExistente.setStatus(atividadeDTO.getStatusPdf());
 		atividadeExistente.setTrabalho(trabalhoExistente);
 
+		List<Atividade> listaAtividadeTrabalho = listarPorTrabalho(trabalhoExistente.getId());
+		int contador = 0;
+		for (Atividade atividade : listaAtividadeTrabalho) {
+			if(atividade.getStatus() == StatusPDF.AVALIADO){
+				contador++;
+			}
+		}
+		if(contador == listaAtividadeTrabalho.size()){
+			trabalhoAcademicoTCCService.updateStatus(trabalhoExistente.getId());
+		}
 		
 		if (arquivos != null && !arquivos.isEmpty()) {
 			for (MultipartFile arquivo : arquivos) {

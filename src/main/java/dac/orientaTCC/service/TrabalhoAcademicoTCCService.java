@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import dac.orientaTCC.dto.TrabalhoAcademicoTCCCreateDTO;
 import dac.orientaTCC.dto.TrabalhoAcademicoTCCResponseDTO;
+import dac.orientaTCC.enums.StatusTrabalho;
 import dac.orientaTCC.exception.TrabalhoAcademicoNaoEncontradoPorMatriculaException;
 import dac.orientaTCC.mapper.TrabalhoAcademicoTCCMapper;
 import dac.orientaTCC.model.entities.TrabalhoAcademicoTCC;
@@ -53,7 +54,8 @@ public class TrabalhoAcademicoTCCService {
         TrabalhoAcademicoTCC trabalho = trabalhoAcademicoTCCRepository.findByAlunoMatricula(matricula);
 
         if (trabalho == null) {
-            throw new TrabalhoAcademicoNaoEncontradoPorMatriculaException("Nenhum trabalho encontrado para a matrícula: " + matricula);
+            throw new TrabalhoAcademicoNaoEncontradoPorMatriculaException(
+                    "Nenhum trabalho encontrado para a matrícula: " + matricula);
         }
 
         return trabalho;
@@ -62,7 +64,6 @@ public class TrabalhoAcademicoTCCService {
     @Transactional(readOnly = true)
     public TrabalhoAcademicoTCC findByIdAluno(Long id) {
         TrabalhoAcademicoTCC trabalho = trabalhoAcademicoTCCRepository.findByAlunoId(id);
-
         return trabalho;
     }
 
@@ -82,9 +83,16 @@ public class TrabalhoAcademicoTCCService {
         trabalhoAcademicoTCCRepository.delete(trabalhoExistente);
     }
 
+    @Transactional(readOnly = true)
     public TrabalhoAcademicoTCC findByIdOrientador(Long id) {
         TrabalhoAcademicoTCC trabalho = trabalhoAcademicoTCCRepository.findByOrientadorId(id);
-
         return trabalho;
+    }
+
+    @Transactional
+    public void updateStatus(Long id) {
+        TrabalhoAcademicoTCC trabalhoExistente = findById(id);
+        trabalhoExistente.setStatus(StatusTrabalho.CONCLUIDO);
+        trabalhoAcademicoTCCRepository.save(trabalhoExistente);//TESTAR SE FUNCIONA
     }
 }
