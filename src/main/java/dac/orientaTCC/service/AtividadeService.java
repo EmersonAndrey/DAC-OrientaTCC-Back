@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import dac.orientaTCC.dto.AtividadeDTO;
 import dac.orientaTCC.dto.PdfDTO;
 import dac.orientaTCC.enums.StatusPDF;
+import dac.orientaTCC.enums.StatusTrabalho;
 import dac.orientaTCC.mapper.AtividadeMapper;
 import dac.orientaTCC.model.entities.Atividade;
 import dac.orientaTCC.model.entities.PDF;
@@ -104,7 +105,9 @@ public class AtividadeService {
 			}
 		}
 		if(contador == listaAtividadeTrabalho.size()){
-			trabalhoAcademicoTCCService.updateStatus(trabalhoExistente.getId());
+			trabalhoAcademicoTCCService.updateStatus(trabalhoExistente.getId(), StatusTrabalho.EM_ANDAMENTO);
+		}else{
+			trabalhoAcademicoTCCService.updateStatus(trabalhoExistente.getId(), StatusTrabalho.CONCLUIDO);
 		}
 		
 		if (arquivos != null && !arquivos.isEmpty()) {
