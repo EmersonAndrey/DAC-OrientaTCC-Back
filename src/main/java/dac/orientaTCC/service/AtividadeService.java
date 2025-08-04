@@ -105,9 +105,9 @@ public class AtividadeService {
 			}
 		}
 		if(contador == listaAtividadeTrabalho.size()){
-			trabalhoAcademicoTCCService.updateStatus(trabalhoExistente.getId(), StatusTrabalho.EM_ANDAMENTO);
-		}else{
 			trabalhoAcademicoTCCService.updateStatus(trabalhoExistente.getId(), StatusTrabalho.CONCLUIDO);
+		}else{
+			trabalhoAcademicoTCCService.updateStatus(trabalhoExistente.getId(), StatusTrabalho.EM_ANDAMENTO);
 		}
 		
 		if (arquivos != null && !arquivos.isEmpty()) {
