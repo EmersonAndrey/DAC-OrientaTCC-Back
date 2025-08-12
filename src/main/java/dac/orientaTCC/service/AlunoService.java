@@ -4,6 +4,7 @@ import dac.orientaTCC.dto.AlunoCreateDTO;
 import dac.orientaTCC.dto.AlunoResponseDTO;
 import dac.orientaTCC.dto.UsuarioCreateDTO;
 import dac.orientaTCC.enums.StatusTrabalho;
+import dac.orientaTCC.exception.MatriculaUniqueViolationException;
 import dac.orientaTCC.exception.TrabalhoAcademicoEmAndamentoExceptionn;
 import dac.orientaTCC.exception.TrabalhoAcademicoNaoEncontradoPorMatriculaException;
 import dac.orientaTCC.mapper.AlunoMapper;
@@ -16,6 +17,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,17 +49,24 @@ public class AlunoService {
 
 
     @Transactional
-    public Aluno save(Aluno aluno) { //colocar o tratamento depois
+    public Aluno save(Aluno aluno) {
         return alunoRepository.save(aluno);
     }
 
     @Transactional
     public AlunoResponseDTO create(@Valid AlunoCreateDTO alunoCreateDTO) {
-        Usuario usuario = usuarioService.salvar(new UsuarioCreateDTO(alunoCreateDTO.getEmail(), alunoCreateDTO.getSenha(), "ROLE_ALUNO"));
-        Aluno aluno = AlunoMapper.toAluno(alunoCreateDTO);
-        aluno.setUsuario(usuario);
+        Aluno aluno;
+        try{
+            Usuario usuario = usuarioService.salvar(new UsuarioCreateDTO(alunoCreateDTO.getEmail(), alunoCreateDTO.getSenha(), "ROLE_ALUNO"));
 
-        aluno = save(aluno);
+            aluno = AlunoMapper.toAluno(alunoCreateDTO);
+            aluno.setUsuario(usuario);
+
+            aluno = save(aluno);
+
+        }catch (DataIntegrityViolationException e){
+            throw new MatriculaUniqueViolationException(String.format("Matricula %s não pode ser cadastrada, já existente no sistema", alunoCreateDTO.getMatricula()));
+        }
 
         return AlunoMapper.toAlunoDTO(aluno);
     }
@@ -83,7 +92,8 @@ public class AlunoService {
 
     @Transactional(readOnly = true)
     public Aluno findByMatricula(String matricula) {
-        return alunoRepository.findByMatricula(matricula);
+        return alunoRepository.findByMatricula(matricula).orElseThrow(
+                () -> new EntityNotFoundException("Aluno não encontrado"));
     }
 
     @Transactional(readOnly = true)

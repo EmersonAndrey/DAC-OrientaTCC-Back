@@ -30,28 +30,28 @@ public class AlunoController {
     private final AlunoService alunoService;
 
     @PostMapping("/")
-    //@PreAuthorize("hasRole('COORDENADOR')")
+    @PreAuthorize("hasRole('COORDENADOR')")
     public ResponseEntity<AlunoResponseDTO> create(@RequestBody @Valid AlunoCreateDTO alunoCreateDTO){
         AlunoResponseDTO aluno = alunoService.create(alunoCreateDTO);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(aluno);
     }
 
-    //@PreAuthorize("hasRole('ALUNO')")
+    @PreAuthorize("hasRole('ALUNO')")
     @GetMapping("/{id}")
     public ResponseEntity<AlunoResponseDTO> findById(@PathVariable Long id){
         Aluno aluno = alunoService.findById(id);
         return ResponseEntity.ok().body(AlunoMapper.toAlunoDTO(aluno));
     }
 
-    //@PreAuthorize("hasRole('COORDENADOR') OR #email == authentication.principal.username")
+    @PreAuthorize("hasRole('COORDENADOR') OR #email == authentication.principal.username")
     @GetMapping("/email/{email}")
     public ResponseEntity<AlunoResponseDTO> findByEmail(@PathVariable String email){
         Aluno aluno = alunoService.findByEmail(email);
         return ResponseEntity.ok(AlunoMapper.toAlunoDTO(aluno));
     }
 
-    //@PreAuthorize("hasRole('COORDENADOR') OR #matricula == authentication.principal.identificador")
+    @PreAuthorize("hasRole('COORDENADOR') OR #matricula == authentication.principal.identificador")
     @GetMapping("/matricula/{matricula}")
     public ResponseEntity<AlunoResponseDTO> findByMatricula(@PathVariable String matricula){
 
@@ -59,21 +59,21 @@ public class AlunoController {
         return ResponseEntity.ok(AlunoMapper.toAlunoDTO(aluno));
     }
 
-    //@PreAuthorize("hasRole('COORDENADOR')")
+    @PreAuthorize("hasRole('COORDENADOR')")
     @GetMapping("/")
     public ResponseEntity<List<AlunoResponseDTO>> findAll(){
         List<Aluno> alunos = alunoService.findAll();
         return ResponseEntity.ok(AlunoMapper.toListAlunoDTO(alunos));
     }
 
-    //@PreAuthorize("hasRole('COORDENADOR')")
+    @PreAuthorize("hasRole('COORDENADOR')")
     @DeleteMapping("/email/{email}")
     public ResponseEntity<Void> removeByEmail(@PathVariable String email){
         alunoService.remove(email);
         return ResponseEntity.noContent().build();
     }
 
-    //@PreAuthorize("hasRole('ALUNO') AND #alunoCreateDTO.getMatricula == authentication.principal.identificador")
+    @PreAuthorize("hasRole('ALUNO') AND #alunoCreateDTO.getMatricula == authentication.principal.identificador")
     @PutMapping("/")
     public ResponseEntity<AlunoResponseDTO> update(@RequestBody AlunoCreateDTO alunoCreateDTO){
         Aluno aluno = alunoService.update(alunoCreateDTO);
