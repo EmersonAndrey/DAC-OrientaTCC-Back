@@ -1,18 +1,18 @@
 package dac.orientaTCC.jwt;
 
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.stereotype.Service;
+
 import dac.orientaTCC.enums.Role;
 import dac.orientaTCC.model.entities.Aluno;
 import dac.orientaTCC.model.entities.Orientador;
 import dac.orientaTCC.model.entities.Usuario;
-import dac.orientaTCC.repository.UsuarioRepository;
 import dac.orientaTCC.service.AlunoService;
 import dac.orientaTCC.service.OrientadorService;
 import dac.orientaTCC.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.stereotype.Service;
 
 @Slf4j
 @RequiredArgsConstructor

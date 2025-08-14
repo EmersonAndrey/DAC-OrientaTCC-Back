@@ -1,11 +1,9 @@
 package dac.orientaTCC.service;
 
-import java.io.IOException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import dac.orientaTCC.dto.PdfDTO;
 import dac.orientaTCC.mapper.PDFMapper;
@@ -37,9 +35,17 @@ public class PDFService {
 
 	    return pdfRepository.save(pdf);
 	}
-	
-	
-	public Optional<PdfDTO> buscarPdfPorId(Long id) {
+
+    public boolean deletarPdf(Long id) {
+        if (pdfRepository.existsById(id)) {
+            pdfRepository.deleteById(id);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public Optional<PdfDTO> buscarPdfPorId(Long id) {
 	    return pdfRepository.findById(id)
 	        .map(pdf -> {
 	            PdfDTO dto = new PdfDTO();
@@ -50,13 +56,4 @@ public class PDFService {
 	            return dto;
 	        });
 	}
-
-    public boolean deletarPdf(Long id) {
-        if (pdfRepository.existsById(id)) {
-            pdfRepository.deleteById(id);
-            return true;
-        } else {
-            return false;
-        }
-    }
 }

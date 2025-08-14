@@ -1,12 +1,17 @@
 package dac.orientaTCC.service;
 
+import java.util.List;
+
+import org.springframework.context.annotation.Lazy;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import dac.orientaTCC.dto.AlunoCreateDTO;
 import dac.orientaTCC.dto.AlunoResponseDTO;
 import dac.orientaTCC.dto.UsuarioCreateDTO;
-import dac.orientaTCC.enums.StatusTrabalho;
 import dac.orientaTCC.exception.MatriculaUniqueViolationException;
-import dac.orientaTCC.exception.TrabalhoAcademicoEmAndamentoExceptionn;
-import dac.orientaTCC.exception.TrabalhoAcademicoNaoEncontradoPorMatriculaException;
 import dac.orientaTCC.mapper.AlunoMapper;
 import dac.orientaTCC.model.entities.Aluno;
 import dac.orientaTCC.model.entities.TrabalhoAcademicoTCC;
@@ -14,17 +19,7 @@ import dac.orientaTCC.model.entities.Usuario;
 import dac.orientaTCC.repository.AlunoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-
-import static dac.orientaTCC.enums.StatusTrabalho.EM_ANDAMENTO;
 
 @Slf4j
 @Service

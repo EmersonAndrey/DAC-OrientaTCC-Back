@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +29,7 @@ public class PDFController {
 	@Autowired
 	private PDFService pdfService;
 	
+	@PreAuthorize("hasAnyRole('ALUNO', 'ORIENTADOR', 'COORDENADOR')")
 	@PostMapping("/salvar")
 	public ResponseEntity<?> salvarPdf(
 	        @RequestParam("file") MultipartFile file,
@@ -46,15 +48,18 @@ public class PDFController {
 	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao processar o arquivo.");
 	    }
 	}
-	
-	@GetMapping("/{id}")
-	public ResponseEntity<PdfDTO> buscarPdfPorId(@PathVariable Long id) {
-	    return pdfService.buscarPdfPorId(id)
-	            .map(ResponseEntity::ok)
-	            .orElse(ResponseEntity.notFound().build());
-	}
-	
-	
+
+	@PreAuthorize("hasAnyRole('ALUNO', 'ORIENTADOR', 'COORDENADOR')")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletarPdf(@PathVariable Long id) {
+        boolean deletado = pdfService.deletarPdf(id);
+        if (deletado) {
+            return ResponseEntity.noContent().build(); // 204 No Content
+        } else {
+            return ResponseEntity.notFound().build();  // 404 Not Found
+        }
+    }
+
 	@GetMapping(value = "/arquivo/{id}", produces = MediaType.APPLICATION_PDF_VALUE)
 	public ResponseEntity<byte[]> downloadPdf(@PathVariable Long id) {
 	    Optional<PdfDTO> pdfOpt = pdfService.buscarPdfPorId(id);
@@ -71,13 +76,10 @@ public class PDFController {
 	            .contentType(MediaType.APPLICATION_PDF)
 	            .body(conteudoPdf);
 	}
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletarPdf(@PathVariable Long id) {
-        boolean deletado = pdfService.deletarPdf(id);
-        if (deletado) {
-            return ResponseEntity.noContent().build(); // 204 No Content
-        } else {
-            return ResponseEntity.notFound().build();  // 404 Not Found
-        }
-    }
+
+
+	@GetMapping("/{id}")
+	public ResponseEntity<PdfDTO> buscarPdfPorId(@PathVariable Long id) {
+	    return ResponseEntity.ok().body(pdfService.buscarPdfPorId(id).get());
+	}
 }

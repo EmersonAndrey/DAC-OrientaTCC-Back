@@ -1,27 +1,27 @@
 package dac.orientaTCC.service;
 
-import dac.orientaTCC.dto.*;
-import dac.orientaTCC.enums.Role;
-import dac.orientaTCC.exception.NaoPodeRemoverOrientadorException;
-import dac.orientaTCC.exception.SiapeUniqueViolationException;
-import dac.orientaTCC.mapper.OrientadorMapper;
-import dac.orientaTCC.model.entities.Aluno;
-import dac.orientaTCC.model.entities.Orientador;
-import dac.orientaTCC.model.entities.TrabalhoAcademicoTCC;
-import dac.orientaTCC.model.entities.Usuario;
-import dac.orientaTCC.repository.AlunoRepository;
-import dac.orientaTCC.repository.OrientadorRepository;
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
+
 import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import dac.orientaTCC.dto.OrientadorCreateDTO;
+import dac.orientaTCC.dto.OrientadorResponseDTO;
+import dac.orientaTCC.dto.UsuarioCreateDTO;
+import dac.orientaTCC.enums.Role;
+import dac.orientaTCC.exception.NaoPodeRemoverOrientadorException;
+import dac.orientaTCC.exception.SiapeUniqueViolationException;
+import dac.orientaTCC.mapper.OrientadorMapper;
+import dac.orientaTCC.model.entities.Orientador;
+import dac.orientaTCC.model.entities.TrabalhoAcademicoTCC;
+import dac.orientaTCC.model.entities.Usuario;
+import dac.orientaTCC.repository.OrientadorRepository;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
@@ -30,17 +30,14 @@ public class OrientadorService {
     private final OrientadorRepository orientadorRepository;
     private final UsuarioService usuarioService;
     private final PasswordEncoder passwordEncoder;
-    private final AlunoRepository alunoRepository;
     private final TrabalhoAcademicoTCCService trabalhoAcademicoTCCService;
 
     public OrientadorService(
             OrientadorRepository orientadorRepository,
-            AlunoRepository alunoRepository,
             UsuarioService usuarioService,
             PasswordEncoder passwordEncoder,
             @Lazy TrabalhoAcademicoTCCService trabalhoAcademicoTCCService) {
         this.orientadorRepository = orientadorRepository;
-        this.alunoRepository = alunoRepository;
         this.usuarioService = usuarioService;
         this.passwordEncoder = passwordEncoder;
         this.trabalhoAcademicoTCCService = trabalhoAcademicoTCCService;

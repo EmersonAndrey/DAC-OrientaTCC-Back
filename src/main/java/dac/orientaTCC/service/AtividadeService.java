@@ -23,19 +23,16 @@ import dac.orientaTCC.repository.AtividadeRepository;
 @Service
 public class AtividadeService {
 
-	
 	private final AtividadeRepository atividadeRepository;
 	private final TrabalhoAcademicoTCCService trabalhoAcademicoTCCService;
 
-	public AtividadeService(AtividadeRepository atividadeRepository, TrabalhoAcademicoTCCService trabalhoAcademicoTCCService){
+	public AtividadeService(AtividadeRepository atividadeRepository,
+			TrabalhoAcademicoTCCService trabalhoAcademicoTCCService) {
 		this.atividadeRepository = atividadeRepository;
-		this.trabalhoAcademicoTCCService = trabalhoAcademicoTCCService; 
+		this.trabalhoAcademicoTCCService = trabalhoAcademicoTCCService;
 	}
 
-
 	public ResponseEntity<?> salvarAtividade(AtividadeDTO atividadeDTO, List<MultipartFile> arquivos) {
-	
-
 		try {
 			List<PdfDTO> pdfDTOs = new ArrayList<>();
 
@@ -43,7 +40,7 @@ public class AtividadeService {
 				for (MultipartFile arquivo : arquivos) {
 					PdfDTO pdfDto = new PdfDTO();
 					pdfDto.setNomeArquivo(arquivo.getOriginalFilename());
-					pdfDto.setConteudo(arquivo.getBytes()); 
+					pdfDto.setConteudo(arquivo.getBytes());
 					pdfDto.setNomeAdicionou(atividadeDTO.getNomeAdicionouPdfs());
 
 					pdfDTOs.add(pdfDto);
@@ -54,7 +51,6 @@ public class AtividadeService {
 
 			Atividade atividade = AtividadeMapper.toAtividade(atividadeDTO);
 
-			
 			if (atividade.getPdfs() != null) {
 				for (PDF pdf : atividade.getPdfs()) {
 					pdf.setAtividade(atividade);
@@ -63,6 +59,22 @@ public class AtividadeService {
 
 			Atividade atividadeSalva = atividadeRepository.save(atividade);
 
+			// ao criaar uma ativiade verificara se tods esto avaliadas paara mudar o status
+			// do trabalho
+			TrabalhoAcademicoTCC trabalhoExistente = trabalhoAcademicoTCCService.findById(atividadeDTO.getIdTrabalho());
+			List<Atividade> listaAtividadeTrabalho = listarPorTrabalho(trabalhoExistente.getId());
+			int contador = 0;
+			for (Atividade atividadeExistente : listaAtividadeTrabalho) {
+				if (atividadeExistente.getStatus() == StatusPDF.AVALIADO) {
+					contador++;
+				}
+			}
+			if (contador == listaAtividadeTrabalho.size()) {
+				trabalhoAcademicoTCCService.updateStatus(trabalhoExistente.getId(), StatusTrabalho.CONCLUIDO);
+			} else {
+				trabalhoAcademicoTCCService.updateStatus(trabalhoExistente.getId(), StatusTrabalho.EM_ANDAMENTO);
+			}
+
 			return ResponseEntity.status(HttpStatus.CREATED).body(atividadeSalva);
 
 		} catch (IOException e) {
@@ -70,8 +82,7 @@ public class AtividadeService {
 		}
 	}
 
-	public ResponseEntity<?> editarAtividade(AtividadeDTO atividadeDTO, List<MultipartFile> arquivos,
-			String tipoUser) {
+	public ResponseEntity<?> editarAtividade(AtividadeDTO atividadeDTO, List<MultipartFile> arquivos) {
 
 		if (atividadeDTO.getId() == null) {
 			return ResponseEntity.badRequest().body("ID da atividade não pode ser nulo");
@@ -100,16 +111,16 @@ public class AtividadeService {
 		List<Atividade> listaAtividadeTrabalho = listarPorTrabalho(trabalhoExistente.getId());
 		int contador = 0;
 		for (Atividade atividade : listaAtividadeTrabalho) {
-			if(atividade.getStatus() == StatusPDF.AVALIADO){
+			if (atividade.getStatus() == StatusPDF.AVALIADO) {
 				contador++;
 			}
 		}
-		if(contador == listaAtividadeTrabalho.size()){
+		if (contador == listaAtividadeTrabalho.size()) {
 			trabalhoAcademicoTCCService.updateStatus(trabalhoExistente.getId(), StatusTrabalho.CONCLUIDO);
-		}else{
+		} else {
 			trabalhoAcademicoTCCService.updateStatus(trabalhoExistente.getId(), StatusTrabalho.EM_ANDAMENTO);
 		}
-		
+
 		if (arquivos != null && !arquivos.isEmpty()) {
 			for (MultipartFile arquivo : arquivos) {
 				PDF novoPdf = new PDF();
