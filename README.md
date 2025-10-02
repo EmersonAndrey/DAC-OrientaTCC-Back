@@ -26,8 +26,8 @@ OrientaTCC-Back/
 │ │ │ ├── repository/ # Interfaces de persistência (Spring Data JPA)
 │ │ │ ├── service/ # Camada de regra de negócio
 │ │ │ ├── jwt/ # Implementação de autenticação/autorização (JWT, filtros, configs)
-| | | ├── mapper/ # Classes de mapeamento
-| | | ├── enums/ # Constantes Globais (roles, status ect.)
+│ │ │ ├── mapper/ # Classes de mapeamento
+│ │ │ ├── enums/ # Constantes Globais (roles, status ect.)
 │ │ │ └── util/ # Classes utilitárias e helpers
 │ │ └── resources/
 │ │ ├── application.properties # Configurações da aplicação
