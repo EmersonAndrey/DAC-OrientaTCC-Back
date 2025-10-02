@@ -1,4 +1,4 @@
-# 🎓 OrientaTCC Backend — Spring Boot + Java + PostgreSQL  
+# 🎓 OrientaTCC Backend — Spring Boot + Java + MySQL  
 
 ## 📝 Descrição do Projeto  
 
