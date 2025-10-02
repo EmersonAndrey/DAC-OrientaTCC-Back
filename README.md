@@ -28,10 +28,10 @@ OrientaTCC-Back/
 │ │ │ ├── jwt/ # Implementação de autenticação/autorização (JWT, filtros, configs)
 │ │ │ ├── mapper/ # Classes de mapeamento
 │ │ │ ├── enums/ # Constantes Globais (roles, status ect.)
-│ │ │ └── util/ # Classes utilitárias e helpers
+│ │ │ └── util/ # Classes utilitárias 
 │ │ └── resources/
-│ │ ├── application.properties # Configurações da aplicação
-│ │ └── application-dev.yml # Configurações específicas para ambiente de dev
+│ │   └── application.properties # Configurações da aplicação
+│ │  
 │ └── test/
 │ └── java/
 │ └── com/orientatcc/ # Testes unitários e de integração
