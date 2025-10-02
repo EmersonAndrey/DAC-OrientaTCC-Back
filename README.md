@@ -99,12 +99,10 @@ A aplicação ficará disponível em:
 
 | Método | Endpoint                        | Descrição                  |
 |--------|---------------------------------|----------------------------|
-| POST   | `/api/v1/auth`                  | Autenticação e geração de JWT    |
-| GET    | `/api/v1/usuarios`              | Listar todos os usuários      |
-| POST   | `/api/v1/tcc`                   | Criar novo Trabalho de Conclusão    |
-| GET    | `/api/v1/tcc/{id}`              | Consultar TCC por ID  |
-| POST   | `/api/v1/atividades`            | Registrar nova atividade  |
-| GET    | `/api/v1/atividades/{id}/pdfs`  | Listar PDFs vinculados a uma atividade |
+| POST   | `/api/auth`                     | Autenticação e geração de JWT    |
+| POST   | `/api/trabalhoAcademico`        | Criar novo Trabalho de Conclusão    |
+| POST   | `/atividade/salvarAtividade`    | Registrar nova atividade  |
+| GET    | `/pdf/salvar`                   | Registra novo pdf |
 
 ---
 
